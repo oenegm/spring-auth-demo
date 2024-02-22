@@ -1,0 +1,117 @@
+version: '3.9'
+
+services:
+
+  keycloak:
+    container_name: keycloak
+    image: quay.io/keycloak/keycloak:latest
+    depends_on:
+      keycloak-db:
+        condition: service_healthy
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://keycloak-db/keycloak
+      KC_DB_USERNAME: postgres
+      KC_DB_PASSWORD: postgres
+      KC_FEATURES: token-exchange
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./realm-export.json:/opt/keycloak/data/import/realm-export.json
+    command: [ "start-dev", "--import-realm" ]
+    networks:
+      - "backend"
+
+  keycloak-db:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - "backend"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 1s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - keycloak-db-data:/var/lib/postgresql/data
+
+
+  api-gateway:
+    container_name: api-gateway
+    build: ./api-gateway
+    image: api-gateway:latest
+    ports:
+      - "8081:8081"
+    networks:
+      - "backend"
+    environment:
+      SERVER_PORT: 8081
+      KEYCLOAK_URL: http://keycloak:8080
+      AUTHORIZATION_SERVICE_URL: http://authorization-service:8083
+      RESOURCE_SERVICE_URL: http://resource-service:8082
+
+
+  authorization-service:
+    container_name: authorization-service
+    build: ./authorization-service
+    image: authorization-service:latest
+    ports:
+      - "8083:8083"
+    networks:
+      - "backend"
+    environment:
+      SERVER_PORT: 8083
+      KEYCLOAK_URL: http://keycloak:8080
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+
+
+  resource-service:
+    container_name: resource-service
+    build: ./resource-service
+    image: resource-service:latest
+    depends_on:
+      - users-db
+    ports:
+      - "8082:8082"
+    networks:
+      - "backend"
+    environment:
+      SERVER_PORT: 8082
+      KEYCLOAK_URL: http://keycloak:8080
+      AUTHORIZATION_SERVICE_URL: http://authorization-service:8083
+      DB_URL: jdbc:postgresql://users-db/users
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+
+  users-db:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: users
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5433:5432"
+    networks:
+      - "backend"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 1s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - users-db-data:/var/lib/postgresql/data
+
+networks:
+  backend:
+
+volumes:
+  keycloak-db-data:
+  users-db-data:

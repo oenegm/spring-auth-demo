@@ -1,0 +1,39 @@
+debug: true
+
+logging:
+  level:
+    httpclient:
+      wire: DEBUG
+    org:
+      springframework:
+        web:
+          servlet.DispatcherServlet: DEBUG
+          client.RestTemplate: DEBUG
+        security: DEBUG
+      hibernate:
+        SQL: DEBUG
+        type.descriptor.sql.BasicBinder: TRACE
+
+server:
+  port: ${SERVER_PORT}
+
+spring:
+  application:
+    name: authorization-service
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${KEYCLOAK_URL}/realms/${KEYCLOAK_REALM:demo}
+
+
+keycloak:
+  url: ${KEYCLOAK_URL}
+  realm: ${KEYCLOAK_REALM:demo}
+  admin:
+    client-id: admin-cli
+    username: ${KEYCLOAK_ADMIN}
+    password: ${KEYCLOAK_ADMIN_PASSWORD}
+  auth:
+    client-id: backend
+    scope: backend-access

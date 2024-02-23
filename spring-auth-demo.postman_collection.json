@@ -1,0 +1,199 @@
+{
+	"info": {
+		"_postman_id": "5f3ceba2-bce1-4191-b41a-579d7e5c35c3",
+		"name": "spring-auth-demo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29181311"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "authenticate",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"test@test.com\",\r\n  \"password\": \"New@1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_gateway}}/auth",
+							"host": [
+								"{{api_gateway}}"
+							],
+							"path": [
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "refresh token",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI2ZjBhODgyMy05MDYxLTQ2MWItOGQ1YS1mNDkyZWUyMTY2NDEifQ.eyJleHAiOjE3MDgyMDUzMzYsImlhdCI6MTcwODE5ODEzNiwianRpIjoiYjcyOTE2NjctYzA1MC00ODRjLWJlZjQtMGIyOTkzYjEzMzQ2IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL3JlYWxtcy9kZW1vIiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL3JlYWxtcy9kZW1vIiwic3ViIjoiMWJkMDRhOTAtYzdiMC00OTlmLWFkZTItMjRhYTA0N2YzMWNmIiwidHlwIjoiUmVmcmVzaCIsImF6cCI6ImJhY2tlbmQiLCJzZXNzaW9uX3N0YXRlIjoiYWYzNjNjN2UtMDcxNy00ODgyLWFmMzMtZGQ0MDlmMWVmYTg3Iiwic2NvcGUiOiJiYWNrZW5kLWFjY2VzcyIsInNpZCI6ImFmMzYzYzdlLTA3MTctNDg4Mi1hZjMzLWRkNDA5ZjFlZmE4NyJ9.ZQNm34EY83g5L0kiczaDsj0lZExmPX626DrXt9zR2AY\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_gateway}}/auth/refresh-token",
+							"host": [
+								"{{api_gateway}}"
+							],
+							"path": [
+								"auth",
+								"refresh-token"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "register",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"test@test.com\",\r\n  \"password\": \"Test!123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_gateway}}/users",
+							"host": [
+								"{{api_gateway}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_gateway}}/users",
+							"host": [
+								"{{api_gateway}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "change password",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"password\": \"New@1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_gateway}}/users/password",
+							"host": [
+								"{{api_gateway}}"
+							],
+							"path": [
+								"users",
+								"password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete user",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{api_gateway}}/users",
+							"host": [
+								"{{api_gateway}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJBUVBPNy1jR0V2OEdZRTlTM0tvTExjZkhZS0ZtcEM3QWVFdEEyZUkzUzhBIn0.eyJleHAiOjE3MDg0MzA5MjUsImlhdCI6MTcwODQyMzcyNSwianRpIjoiYTg4ZTE5YTItNzcyMy00NDYzLWExMGYtMjkxMWZmMjM0OGIzIiwiaXNzIjoiaHR0cDovL2tleWNsb2FrOjgwODAvcmVhbG1zL2RlbW8iLCJzdWIiOiJiYjE5Y2M0Yi04ZDc2LTQ0NmYtYWUzNi0zZjA1NzFlNTc3OTQiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJiYWNrZW5kIiwic2Vzc2lvbl9zdGF0ZSI6ImI3Y2UwYWUwLTUwOTctNGRhZC1hMzQyLWQ0ZWY2ZTE2YjAxMyIsInNjb3BlIjoiYmFja2VuZC1hY2Nlc3MiLCJzaWQiOiJiN2NlMGFlMC01MDk3LTRkYWQtYTM0Mi1kNGVmNmUxNmIwMTMiLCJyb2xlcyI6WyJST0xFX2RlZmF1bHQtcm9sZXMtZGVtbyIsIlJPTEVfdXNlciJdfQ.TZxKqnDI5PV7RCspK1y3op4jVjUZnBL3xP6BTn9TXxJTFF9euohuJRlTdYrKERnEfMISuzq7ldpLVRO2kfkPxAVocqJLeQ_LcNTC1O37FmU18LE3pYm6VR2mKcQ4-EEUQka0yNXXmEKNeyurO9qRHWE3pivpdgPxDt2acPUKzA58nueuTDb5gy3lILSM2evkvS4uqf5rh9Q2Ksz3Hwf-1arwOo8hUrVgEAe2PgQk2huod343xLl8qYtpIucH_ASnBWinLVDjQus-pnvQGI_yuxs6ugGT4o-eLFYZHbtOEZRNKAjhmKpjKFqtp9tdPBkIu8PcgDe-YQEtlf56R2hpJQ",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	]
+}
